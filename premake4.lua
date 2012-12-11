@@ -24,12 +24,12 @@ local proj=project("wordutate")
 targetname("wordutate")
 
 configuration {"x32"}
-	objdir("out/x86/")
-	targetdir("bin/x86/")
+	objdir("out/")
+	targetdir("bin/x32/")
 
 configuration {"x64"}
-	objdir("out/x86_64/")
-	targetdir("bin/x86_64/")
+	objdir("out/")
+	targetdir("bin/x64/")
 
 configuration {"debug"}
 	defines {"DEBUG", "_DEBUG"}
