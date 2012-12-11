@@ -1,0 +1,21 @@
+{
+	"folders":
+	[
+		{
+			"name": "Root",
+			"path": "."
+		},
+		{
+			"name": "- Dependencies",
+			"path": "deps"
+		},
+		{
+			"name": "- Source",
+			"path": "src"
+		}
+	],
+	"settings":
+	{
+		"tab_size": 4
+	}
+}

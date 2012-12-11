@@ -1,0 +1,8 @@
+# Makefiles and build data
+Makefile
+*.make
+out/
+bin/
+
+# Project stuff
+*.sublime-workspace
