@@ -36,7 +36,7 @@ Input commands (`$` and `@`) take arguments immediately after the command (which
 
 ## Compiling
 
-You'll need a respectable C++11 compiler (like Clang 3.1+ or GCC 4.7+, which are actually the only two that currently work due to global ctors & dtors), [premake](http://industriousone.com/premake) 4.4+, and [duct++](/komiga/duct-cpp) (see the README in [deps/](/komiga/wordutate/deps)).
+You'll need a respectable C++11 compiler (like Clang 3.1+ or GCC 4.7+, which are actually the only two that currently work due to global ctors & dtors), [premake](http://industriousone.com/premake) 4.4+, and [duct++](/komiga/duct-cpp) (see the README in [deps/](/komiga/wordutate/tree/master/deps)).
 
 Run `build.sh` (or `build.sh _ gmake --clang` for Clang, and set `CC` and `CXX` to `clang` — yay, premake hacks!) and then `make`.
 
