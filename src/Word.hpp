@@ -20,10 +20,8 @@ class PhraseParser;
 /**
 */
 class Word {
-public:
-	typedef stl::unordered_map<duct::char32, unsigned int> count_map_type;
-
 private:
+	typedef stl::unordered_map<duct::char32, unsigned int> count_map_type;
 	String m_word;
 	count_map_type m_counts;
 	ConsoleColor m_fgc;
@@ -65,8 +63,7 @@ public:
 	inline ConsoleColor get_fg_color() const { return m_fgc; }
 	inline ConsoleColor get_bg_color() const { return m_bgc; }
 
-	inline count_map_type& get_counts() { return m_counts; }
-	std::size_t distinct_letter_count() const { return m_counts.size(); }
+	std::size_t distinct_char_count() const { return m_counts.size(); }
 /// @}
 
 /** @name Comparison and operations */ /// @{
@@ -76,7 +73,7 @@ public:
 	bool matches(Word const& other) const;
 
 	void refresh_counts();
-	void print(bool style=true, ConsoleAttribute const attr=ATTR_BOLD, ConsoleColor const ovr_fgc=COLOR_NULL, ConsoleColor const ovr_bgc=COLOR_NULL) const;
+	void print(bool style, ConsoleAttribute const attr=ATTR_BOLD, ConsoleColor const ovr_fgc=COLOR_NULL, ConsoleColor const ovr_bgc=COLOR_NULL) const;
 /// @}
 };
 
@@ -87,8 +84,6 @@ public:
 	typedef stl::vector<std::shared_ptr<Word> > word_vector_type;
 
 private:
-	typedef stl::unordered_map<std::shared_ptr<Word>, word_vector_type> word_match_map_type;
-
 	String m_phrase;
 	word_vector_type m_group;
 
@@ -111,7 +106,7 @@ public:
 /// @}
 
 /** @name Comparison & operations */ /// @{
-	bool compare(Wordutator const& other) const;
+	bool compare(Wordutator& other) const;
 
 	void calc_colors();
 	inline void clear() {
@@ -119,9 +114,6 @@ public:
 	}
 	void print(char const prefix[], bool const newline=true, ConsoleColor const fgc=COLOR_BLUE) const;
 /// @}
-
-private:
-	void match_words(word_match_map_type& map, Wordutator const& with) const;
 };
 
 /**

@@ -1,4 +1,5 @@
 
+#include "./stl.hpp"
 #include "./String.hpp"
 #include "./Log.hpp"
 #include "./Word.hpp"
@@ -40,16 +41,14 @@ void Word::refresh_counts() {
 }
 
 bool Word::matches(Word const& other) const {
-	if (/*other.get_length()!=get_length() ||*/ distinct_letter_count()!=other.distinct_letter_count()) {
+	if (distinct_char_count()!=other.distinct_char_count()) { // Quick exit: the words don't share the same number of distinct characters
 		return false;
 	} else {
-		//unsigned int i=0;
-		for (auto x=m_counts.cbegin(), y=other.m_counts.cbegin(); m_counts.cend()!=x && other.m_counts.cend()!=y; ++x, ++y) {
-			//Log::msgp("x[%d]{%d, %d} y[%d]{%d, %d}", ATTR_BOLD, COLOR_WHITE, i, (int)x->first, x->second, i, (int)y->first, y->second);
-			if (x->first!=y->first || x->second!=y->second) {
+		for (auto const& x : m_counts) {
+			auto const& iter=other.m_counts.find(x.first);
+			if (other.m_counts.cend()==iter || x.second!=iter->second) { // Either other doesn't have character x.first or its count is not equal to x's
 				return false;
 			}
-			//++i;
 		}
 	}
 	return true;
@@ -81,7 +80,6 @@ ColorPair const s_color_pairs[]={
 	{COLOR_RED, COLOR_BLACK},
 	{COLOR_GREEN, COLOR_BLACK},
 	{COLOR_BLUE, COLOR_BLACK},
-	{COLOR_DEFAULT, COLOR_BLACK},
 	{COLOR_CYAN, COLOR_BLACK},
 	{COLOR_MAGENTA, COLOR_BLACK},
 	{COLOR_YELLOW, COLOR_BLACK},
@@ -89,7 +87,6 @@ ColorPair const s_color_pairs[]={
 	// BG blue
 	{COLOR_RED, COLOR_BLUE},
 	{COLOR_GREEN, COLOR_BLUE},
-	{COLOR_DEFAULT, COLOR_BLUE},
 	{COLOR_CYAN, COLOR_BLUE},
 	{COLOR_MAGENTA, COLOR_BLUE},
 	{COLOR_YELLOW, COLOR_BLUE},
@@ -136,76 +133,56 @@ void Wordutator::calc_colors() {
 	}
 }
 
-bool Wordutator::compare(Wordutator const& other) const {
-	// Check for matches (fills match_map)
-	word_match_map_type match_map;
-	match_words(match_map, other);
-
-	// Merge flat
-	word_vector_type matched, unmatched{other.m_group};
-	word_vector_type::iterator wli;
-	for (auto& match_pair : match_map) {
-		for (auto& match_word : match_pair.second) {
-			wli=std::find(matched.begin(), matched.end(), match_word);
-			if (matched.end()==wli) { // Word can only be used once
-				matched.emplace_back(match_word);
-				wli=std::find(unmatched.begin(), unmatched.end(), match_word);
-				if (unmatched.end()!=wli) {
-					unmatched.erase(wli);
-				} else {
-					// TODO: "Oops" what, precisely?
-					DUCT_ASSERT(false, "oops");
-				}
-				match_word->set_color(*match_pair.first);
+bool Wordutator::compare(Wordutator& other) const {
+	// Match words
+	stl::vector<Word const*> unmatched;
+	stl::list<std::shared_ptr<Word> > candidates{other.m_group.begin(), other.m_group.end()};
+	for (auto const& word : m_group) {
+		auto candidate_iter=candidates.begin();
+		for (; candidates.end()!=candidate_iter; ++candidate_iter) {
+			if (word->matches(**candidate_iter)) {
 				break;
-			} else {
-				std::printf("'%s' (%p == %p) already in matched\n", match_word->get_word().c_str(), static_cast<void*>(&*match_word), static_cast<void*>(&**wli));
 			}
 		}
+		if (candidates.end()!=candidate_iter) { // Match found, remove from candidates
+			(*candidate_iter)->set_color(*word); // Colorize matching word
+			candidates.erase(candidate_iter);
+		} else { // No match for word
+			unmatched.emplace_back(word.get());
+		}
 	}
-	for (auto& word : unmatched) {
+	// Any remaining words in candidates were not matchable
+	for (auto& word : candidates) {
 		word->set_color(COLOR_WHITE, COLOR_RED);
 	}
 
-	bool matches=(0==unmatched.size() && get_count()==other.get_count());
+	bool matches=(candidates.empty() && get_count()==other.get_count());
 	other.print("compare", false, matches ? COLOR_GREEN : COLOR_RED);
 
 	// Print un-matched original words
-	bool dash=false;
-	for (auto const& match_pair : match_map) {
-		if (0==match_pair.second.size()) {
-			if (!dash) {
-				std::printf("- ");
-				dash=true;
-			}
-			match_pair.first->print(true, ATTR_UNDERSCORE);
-			std::printf(" ");
+	if (!unmatched.empty()) {
+		std::putchar(' ');
+		Console::instance()->push(ATTR_BOLD);
+		Log::msgps("||", ATTR_STRIKE, COLOR_DEFAULT, COLOR_RED);
+		Console::instance()->pop();
+		std::printf("  ");
+		for (auto const word : unmatched) {
+			word->print(true);
+			std::putchar(' ');
 		}
 	}
-	std::printf("\n");
+	std::putchar('\n');
 	return matches;
 }
 
 void Wordutator::print(char const prefix[], bool const newline, ConsoleColor const fgc) const {
 	Log::msgps("%s (%-2lu): ", ATTR_BOLD, fgc, COLOR_DEFAULT, prefix, get_count());
 	for (auto const& word : m_group) {
-		word->print();
+		word->print(true);
 		std::putchar(' ');
 	}
 	if (newline) {
 		std::putchar('\n');
-	}
-}
-
-void Wordutator::match_words(word_match_map_type& map, Wordutator const& other) const {
-	// For each word in this, add to map[x] each matching word from other
-	for (auto const& x : m_group) {
-		word_vector_type& ml=map[x];
-		for (auto const& y : other.m_group) {
-			if (x->matches(*y)) {
-				ml.emplace_back(y);
-			}
-		}
 	}
 }
 
@@ -308,10 +285,8 @@ void PhraseParser::read_word_token() {
 
 void PhraseParser::read_word_span_token() {
 	while (duct::CHAR_EOF!=m_curchar) {
-		/*if (s_set_whitespace.contains(m_curchar)) {
-			// ignore
-		} else*/if (duct::CHAR_OPENBRACE==m_curchar) {
-			// ignore
+		if (duct::CHAR_OPENBRACE==m_curchar) {
+			// Ignore
 		} else if (duct::CHAR_CLOSEBRACE==m_curchar) {
 			next_char();
 			break;

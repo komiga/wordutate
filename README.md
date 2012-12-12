@@ -23,7 +23,7 @@ It also allows grouping with braces, where whitespace is ignored in matching. Th
 
 (If you wanted to match a phrase in any broken-up form, you could set *and* match the entire phrase with braces.)
 
-If an input word matches one in the current phrase, it will share the color of the matched word. Non-matching input words will have a red background and all unmatched words from the current phrase will be underlined to the right.
+If an input word matches one in the current phrase, it will share the color of the matched word. Non-matching input words will have a red background and all unmatched words from the current phrase will be placed to the right of the input words (separated by a striked `||`).
 
 ## Commands
 
