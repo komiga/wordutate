@@ -1,8 +1,9 @@
+
 # Makefiles and build data
 Makefile
-*.make
+wordutate.make
 out/
 bin/
 
 # Project stuff
-*.sublime-workspace
+wordutate.sublime-workspace
