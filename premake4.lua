@@ -14,7 +14,7 @@ end
 -- Solution
 solution("wordutate")
 	configurations {"debug", "release"}
-	platforms {"x32", "x64"}
+	platforms {"x64", "x32"}
 
 -- Project
 local proj=project("wordutate")
@@ -50,7 +50,7 @@ configuration {"clang"}
 
 configuration {}
 	includedirs {
-		"deps/duct/",
+		"dep/duct/",
 		"include/"
 	}
 	files {

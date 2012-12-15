@@ -3,15 +3,15 @@
 	[
 		{
 			"name": "Root",
-			"path": "."
+			"path": "./"
 		},
 		{
 			"name": "- Dependencies",
-			"path": "deps"
+			"path": "./dep/"
 		},
 		{
 			"name": "- Source",
-			"path": "src"
+			"path": "./src/"
 		}
 	],
 	"settings":
