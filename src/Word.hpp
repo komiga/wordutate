@@ -3,7 +3,7 @@
 #define WORDUTATE_WORD_HPP_
 
 #include "./config.hpp"
-#include "./stl.hpp"
+#include "./aux.hpp"
 #include "./String.hpp"
 #include "./Console.hpp"
 
@@ -21,7 +21,7 @@ class PhraseParser;
 */
 class Word {
 private:
-	typedef stl::unordered_map<duct::char32, unsigned int> count_map_type;
+	typedef aux::unordered_map<duct::char32, unsigned int> count_map_type;
 	String m_word;
 	count_map_type m_counts;
 	ConsoleColor m_fgc;
@@ -81,7 +81,7 @@ public:
 */
 class Wordutator {
 public:
-	typedef stl::vector<std::shared_ptr<Word> > word_vector_type;
+	typedef aux::vector<std::shared_ptr<Word> > word_vector_type;
 
 private:
 	String m_phrase;

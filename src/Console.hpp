@@ -4,7 +4,7 @@
 
 #include "./config.hpp"
 #include "./String.hpp"
-#include "./stl.hpp"
+#include "./aux.hpp"
 
 // Forward declarations
 enum ConsoleAttribute : int;
@@ -55,7 +55,7 @@ private:
 			, bgc(b)
 		{}
 	};
-	typedef stl::stack<StyleState> stack_type;
+	typedef aux::stack<StyleState> stack_type;
 
 	stack_type m_stack;
 	String m_style_str;

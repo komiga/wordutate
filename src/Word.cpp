@@ -1,5 +1,5 @@
 
-#include "./stl.hpp"
+#include "./aux.hpp"
 #include "./String.hpp"
 #include "./Log.hpp"
 #include "./Word.hpp"
@@ -135,8 +135,8 @@ void Wordutator::calc_colors() {
 
 bool Wordutator::compare(Wordutator& other) const {
 	// Match words
-	stl::vector<Word const*> unmatched;
-	stl::list<std::shared_ptr<Word> > candidates{other.m_group.begin(), other.m_group.end()};
+	aux::vector<Word const*> unmatched;
+	aux::list<std::shared_ptr<Word> > candidates{other.m_group.begin(), other.m_group.end()};
 	for (auto const& word : m_group) {
 		auto candidate_iter=candidates.begin();
 		for (; candidates.end()!=candidate_iter; ++candidate_iter) {
