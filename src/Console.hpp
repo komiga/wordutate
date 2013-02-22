@@ -6,14 +6,16 @@
 #include "./String.hpp"
 #include "./aux.hpp"
 
+#include <duct/traits.hpp>
+
 // Forward declarations
-enum ConsoleAttribute : int;
-enum ConsoleColor : int;
+enum ConsoleAttribute : signed;
+enum ConsoleColor : signed;
 class Console;
 
 /**
 */
-enum ConsoleAttribute : int {
+enum ConsoleAttribute : signed {
 	ATTR_CURRENT=-1,
 	ATTR_NONE=0,
 	ATTR_BOLD=1,
@@ -23,11 +25,12 @@ enum ConsoleAttribute : int {
 
 /**
 */
-enum ConsoleColor : int {
+enum ConsoleColor : signed {
 	COLOR_FG_OFFSET=30,
 	COLOR_BG_OFFSET=40,
 	COLOR_CURRENT=-1,
-	COLOR_NULL=-2, // NOTE: Used in class Word to indicate no override
+	// NOTE: Used in class Word to indicate no override
+	COLOR_NULL=-2,
 	COLOR_BLACK=0,
 	COLOR_RED,
 	COLOR_GREEN,
@@ -42,29 +45,23 @@ enum ConsoleColor : int {
 
 /**
 */
-class Console {
+class Console final
+	: duct::traits::restrict_copy {
 private:
-	struct StyleState {
+	struct StyleState final {
 		ConsoleAttribute attr;
 		ConsoleColor fgc;
 		ConsoleColor bgc;
-
-		inline StyleState(ConsoleAttribute const a, ConsoleColor const f, ConsoleColor const b)
-			: attr(a)
-			, fgc(f)
-			, bgc(b)
-		{}
 	};
 	typedef aux::stack<StyleState> stack_type;
 
-	stack_type m_stack;
+	stack_type m_stack{};
 	String m_style_str;
 
 	Console()
-		: m_stack()
-		, m_style_str("\033[A;3F;4Bm")
+		: m_style_str{"\033[A;3F;4Bm"}
 	{
-		m_stack.emplace(ATTR_NONE, COLOR_DEFAULT, COLOR_DEFAULT);
+		m_stack.push({ATTR_NONE, COLOR_DEFAULT, COLOR_DEFAULT});
 	}
 	~Console() {
 		reset_props();
@@ -75,9 +72,13 @@ private:
 	static void shutdown() __attribute__((destructor (210)));
 
 public:
-	inline static Console* instance() { return s_instance; }
+	static Console* instance() { return s_instance; }
 
-	void push(ConsoleAttribute const attr=ATTR_CURRENT, ConsoleColor const fgc=COLOR_CURRENT, ConsoleColor const bgc=COLOR_CURRENT);
+	void push(
+		ConsoleAttribute const attr=ATTR_CURRENT,
+		ConsoleColor const fgc=COLOR_CURRENT,
+		ConsoleColor const bgc=COLOR_CURRENT
+	);
 	void pop();
 	void clear_line(bool const moveup=true) const;
 

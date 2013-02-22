@@ -10,8 +10,8 @@
 
 static void init() __attribute__((constructor (999)));
 static void shutdown() __attribute__((destructor (999)));
-static void handle_interrupt(int) [[noreturn]];
-int main(int, char const*[]);
+static void handle_interrupt(signed) [[noreturn]];
+signed main();
 
 static void init() {
 	DUCT_DEBUG_CALLED();
@@ -22,12 +22,12 @@ static void shutdown() {
 	DUCT_DEBUG_CALLED();
 }
 
-static void handle_interrupt(int) {
+static void handle_interrupt(signed) {
 	std::signal(SIGINT, SIG_DFL);
 	std::exit(0);
 }
 
-int main(int, char const*[]) {
+signed main() {
 	InputHandler ihandler;
 	do {} while (ihandler.handle_input());
 	return 0;

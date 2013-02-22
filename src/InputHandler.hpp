@@ -6,14 +6,16 @@
 #include "./String.hpp"
 #include "./Word.hpp"
 
+#include <duct/traits.hpp>
+
 // Forward declarations
-enum CommandFlags : unsigned int;
+enum CommandFlags : unsigned;
 struct Command;
 class InputHandler;
 
 /**
 */
-enum CommandFlags : unsigned int {
+enum CommandFlags : unsigned {
 	CMDFLAG_NULL		=1<<0,
 	CMDFLAG_START		=1<<1,
 	CMDFLAG_ABSOLUTE	=1<<2
@@ -21,31 +23,27 @@ enum CommandFlags : unsigned int {
 
 /**
 */
-struct Command {
+struct Command final {
 	String const kernel;
-	unsigned int const flags;
+	unsigned const flags;
+	// (handler, params)
 	bool (*func)(InputHandler&, String&);
 };
 
 /**
 */
-class InputHandler {
+class InputHandler final : duct::traits::restrict_copy {
 private:
-	String m_input;
-	String m_params;
-	Wordutator m_wt_current;
-	Wordutator m_wt_comparer;
+	String m_input{};
+	String m_params{};
+	Wordutator m_wt_current{};
+	Wordutator m_wt_comparer{};
 
 public:
-	InputHandler()
-		: m_input()
-		, m_params()
-		, m_wt_current()
-		, m_wt_comparer()
-	{}
+	InputHandler()=default;
 
-	inline Wordutator& get_current() { return m_wt_current; }
-	inline Wordutator& get_comparer() { return m_wt_comparer; }
+	Wordutator& get_current() { return m_wt_current; }
+	Wordutator& get_comparer() { return m_wt_comparer; }
 
 	bool handle_input();
 

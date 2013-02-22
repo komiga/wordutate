@@ -10,7 +10,8 @@ Console* Console::s_instance=nullptr;
 
 void Console::init() {
 	DUCT_DEBUG_CALLED();
-	DUCT_ASSERT(nullptr==s_instance, "Console already initialized");
+	DUCT_ASSERT(nullptr==s_instance,
+		"Console already initialized");
 	s_instance=new Console();
 }
 
@@ -22,19 +23,26 @@ void Console::shutdown() {
 	}
 }
 
-void Console::push(ConsoleAttribute const attr, ConsoleColor const fgc, ConsoleColor const bgc) {
+void Console::push(
+	ConsoleAttribute const attr,
+	ConsoleColor const fgc,
+	ConsoleColor const bgc
+) {
 	auto const& prev_style=m_stack.top();
-	m_stack.emplace(
+	m_stack.push({
 		(0>attr) ? prev_style.attr : attr,
 		(0>fgc) ? prev_style.fgc : fgc,
 		(0>bgc) ? prev_style.bgc : bgc
-	);
+	});
 	set_props();
 }
 
 void Console::pop() {
-	// NOTE: Style stack has persistent {ATTR_NONE, COLOR_DEFAULT, COLOR_DEFAULT} at bottom
-	DUCT_ASSERT(1<m_stack.size(), "Push/pop mismatch. Cannot pop at bottom of stack!");
+	// NOTE: Style stack has persistent
+	// {ATTR_NONE, COLOR_DEFAULT, COLOR_DEFAULT}
+	// at bottom
+	DUCT_ASSERT(1<m_stack.size(),
+		"Push/pop mismatch. Cannot pop at bottom of stack!");
 	m_stack.pop();
 	set_props();
 }
@@ -48,7 +56,11 @@ void Console::set_props() {
 		m_style_str[2]='0'+style.attr;
 		m_style_str[5]='0'+style.fgc;
 		m_style_str[8]='0'+style.bgc;
-		std::printf("%.*s", static_cast<int>(m_style_str.size()), m_style_str.data());
+		std::printf(
+			"%.*s",
+			static_cast<signed>(m_style_str.size()),
+			m_style_str.data()
+		);
 	}
 }
 

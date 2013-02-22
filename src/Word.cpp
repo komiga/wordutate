@@ -17,7 +17,7 @@ namespace {
 
 static duct::CharacterSet const s_set_whitespace{"\t \r\n"};
 
-} // anonymous implementation namespace
+} // anonymous namespace
 
 // class Word implementation
 
@@ -26,7 +26,8 @@ void Word::refresh_counts() {
 	duct::char32 cp;
 	String::const_iterator pos=m_word.cbegin(), next;
 	for (; m_word.cend()!=pos; pos=next) {
-		next=duct::UTF8Utils::decode(pos, m_word.cend(), cp, 0xFFFD);
+		next=duct::UTF8Utils::decode(
+			pos, m_word.cend(), cp, duct::CHAR_REPLACEMENT);
 		if (next==pos) { // Incomplete sequence; just get out of here
 			return;
 		} else if (!s_set_whitespace.contains(cp)) {
@@ -41,12 +42,16 @@ void Word::refresh_counts() {
 }
 
 bool Word::matches(Word const& other) const {
-	if (distinct_char_count()!=other.distinct_char_count()) { // Quick exit: the words don't share the same number of distinct characters
+	if (distinct_char_count()!=other.distinct_char_count()) {
+		// Quick exit: the words don't share the same number
+		// of distinct characters
 		return false;
 	} else {
 		for (auto const& x : m_counts) {
 			auto const& iter=other.m_counts.find(x.first);
-			if (other.m_counts.cend()==iter || x.second!=iter->second) { // Either other doesn't have character x.first or its count is not equal to x's
+			// Either other doesn't have character x.first or
+			// its count is not equal to x's
+			if (other.m_counts.cend()==iter || x.second!=iter->second) {
 				return false;
 			}
 		}
@@ -54,9 +59,18 @@ bool Word::matches(Word const& other) const {
 	return true;
 }
 
-void Word::print(bool const style, ConsoleAttribute const attr, ConsoleColor const ovr_fgc, ConsoleColor const ovr_bgc) const {
+void Word::print(
+	bool const style,
+	ConsoleAttribute const attr,
+	ConsoleColor const ovr_fgc,
+	ConsoleColor const ovr_bgc
+) const {
 	if (style) {
-		Console::instance()->push(attr, (COLOR_NULL!=ovr_fgc) ? ovr_fgc : m_fgc, (COLOR_NULL!=ovr_bgc) ? ovr_bgc : m_bgc);
+		Console::instance()->push(
+			attr,
+			(COLOR_NULL!=ovr_fgc) ? ovr_fgc : m_fgc,
+			(COLOR_NULL!=ovr_bgc) ? ovr_bgc : m_bgc
+		);
 		std::cout<<m_word;
 		Console::instance()->pop();
 	} else {
@@ -75,7 +89,7 @@ struct ColorPair {
 	ConsoleColor bg;
 };
 
-ColorPair const s_color_pairs[]={
+ColorPair const s_color_pairs[]{
 	// BG black
 	{COLOR_RED, COLOR_BLACK},
 	{COLOR_GREEN, COLOR_BLACK},
@@ -112,7 +126,7 @@ ColorPair const s_color_pairs[]={
 	{COLOR_NULL, COLOR_NULL}
 };
 
-} // anonymous implementation namespace
+} // anonymous namespace
 
 size_t Wordutator::set_phrase(String const& phrase) {
 	m_phrase.assign(phrase);
@@ -136,7 +150,8 @@ void Wordutator::calc_colors() {
 bool Wordutator::compare(Wordutator& other) const {
 	// Match words
 	aux::vector<Word const*> unmatched;
-	aux::list<std::shared_ptr<Word> > candidates{other.m_group.begin(), other.m_group.end()};
+	aux::list<std::shared_ptr<Word> > candidates
+		{other.m_group.begin(), other.m_group.end()};
 	for (auto const& word : m_group) {
 		auto candidate_iter=candidates.begin();
 		for (; candidates.end()!=candidate_iter; ++candidate_iter) {
@@ -144,8 +159,9 @@ bool Wordutator::compare(Wordutator& other) const {
 				break;
 			}
 		}
-		if (candidates.end()!=candidate_iter) { // Match found, remove from candidates
-			(*candidate_iter)->set_color(*word); // Colorize matching word
+		if (candidates.end()!=candidate_iter) { // Match found
+			// Colorize matching word
+			(*candidate_iter)->set_color(*word);
 			candidates.erase(candidate_iter);
 		} else { // No match for word
 			unmatched.emplace_back(word.get());
@@ -175,8 +191,13 @@ bool Wordutator::compare(Wordutator& other) const {
 	return matches;
 }
 
-void Wordutator::print(char const prefix[], bool const newline, ConsoleColor const fgc) const {
-	Log::msgps("%s (%-2lu): ", ATTR_BOLD, fgc, COLOR_DEFAULT, prefix, get_count());
+void Wordutator::print(
+	char const prefix[],
+	bool const newline,
+	ConsoleColor const fgc
+) const {
+	Log::msgps("%s (%-2lu): ",
+		ATTR_BOLD, fgc, COLOR_DEFAULT, prefix, get_count());
 	for (auto const& word : m_group) {
 		word->print(true);
 		std::putchar(' ');
@@ -197,9 +218,11 @@ enum {
 	TOK_EOF
 };
 
-} // anonymous implementation namespace
+} // anonymous namespace
 
-bool PhraseParser::process(Wordutator::word_vector_type& group, String const& str) {
+bool PhraseParser::process(
+	Wordutator::word_vector_type& group, String const& str
+) {
 	duct::IO::imemstream stream{str.data(), str.size()};
 	if (initialize(stream)) {
 		m_group=&group;
@@ -211,7 +234,10 @@ bool PhraseParser::process(Wordutator::word_vector_type& group, String const& st
 }
 
 void PhraseParser::skip_whitespace() {
-	while (m_curchar!=duct::CHAR_EOF && s_set_whitespace.contains(m_curchar)) {
+	while (
+		m_curchar!=duct::CHAR_EOF &&
+		s_set_whitespace.contains(m_curchar)
+	) {
 		next_char();
 	}
 }
@@ -264,7 +290,8 @@ void PhraseParser::handle_token() {
 	case TOK_WORD_SPAN:
 	case TOK_WORD:
 		if (!m_token.get_buffer().compare(s_set_whitespace)) {
-			m_group->emplace_back(new Word(m_token.get_buffer().to_string<String>()));
+			m_group->emplace_back(
+				new Word(m_token.get_buffer().to_string<String>()));
 		}
 		break;
 	default:

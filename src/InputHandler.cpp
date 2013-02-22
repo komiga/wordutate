@@ -5,10 +5,9 @@
 #include "./Word.hpp"
 
 #include <duct/debug.hpp>
-#include <cctype>
+#include <cstdio>
 #include <algorithm>
 #include <functional>
-#include <iostream>
 
 void compare_phrase(String const& phrase);
 bool cmd_set(InputHandler& input_handler, String& params);
@@ -16,7 +15,7 @@ bool cmd_compare(InputHandler& input_handler, String& params);
 bool cmd_print(InputHandler& input_handler, String&);
 bool cmd_exit(InputHandler&, String&);
 
-Command const s_commands[]={
+Command const s_commands[]{
 	{"$", CMDFLAG_START|CMDFLAG_ABSOLUTE, cmd_set},
 	{"@", CMDFLAG_START, cmd_compare},
 	{"#", CMDFLAG_ABSOLUTE, cmd_print},
@@ -29,7 +28,9 @@ bool InputHandler::handle_input() {
 	if (0<m_input.size()) {
 		for (auto const* cmd=s_commands; nullptr!=cmd->func; ++cmd) {
 			if (match_command(*cmd)) {
-				m_params.assign(m_input, cmd->kernel.size(), m_input.size() - cmd->kernel.size());
+				m_params.assign(
+					m_input, cmd->kernel.size(),
+					m_input.size() - cmd->kernel.size());
 				return cmd->func(*this, m_params);
 			}
 		}
@@ -45,7 +46,8 @@ bool InputHandler::match_command(Command const& cmd) {
 		}
 	}
 	if (CMDFLAG_START&cmd.flags) {
-		if (0==m_input.find(cmd.kernel)) { // If input starts with kernel
+		// If input starts with kernel
+		if (0==m_input.find(cmd.kernel)) {
 			return true;
 		}
 	}
@@ -55,7 +57,6 @@ bool InputHandler::match_command(Command const& cmd) {
 bool cmd_compare(InputHandler& input_handler, String& params) {
 	auto& current=input_handler.get_current();
 	auto& comparer=input_handler.get_comparer();
-
 	if (0<current.get_count()) {
 		comparer.set_phrase(params);
 		Console::instance()->clear_line(true);

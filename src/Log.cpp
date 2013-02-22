@@ -16,7 +16,15 @@ void Log::shutdown() {
 	DUCT_DEBUG_CALLED();
 }
 
-void Log::msgp_va(char const* const format, ConsoleAttribute const attr, ConsoleColor const fg_color, ConsoleColor const bg_color, bool newline, bool keep, va_list& va) {
+void Log::msgp_va(
+	char const* const format,
+	ConsoleAttribute const attr,
+	ConsoleColor const fg_color,
+	ConsoleColor const bg_color,
+	bool newline,
+	bool keep,
+	va_list& va
+) {
 	Console::instance()->push(attr, fg_color, bg_color);
 	std::vprintf(format, va);
 	if (!keep) {
@@ -27,21 +35,39 @@ void Log::msgp_va(char const* const format, ConsoleAttribute const attr, Console
 	}
 }
 
-void Log::msgp(char const* const format, ConsoleAttribute const attr, ConsoleColor const fg_color, ConsoleColor const bg_color, ...) {
+void Log::msgp(
+	char const* const format,
+	ConsoleAttribute const attr,
+	ConsoleColor const fg_color,
+	ConsoleColor const bg_color,
+	...
+) {
 	va_list va;
 	va_start(va, bg_color);
 	msgp_va(format, attr, fg_color, bg_color, true, false, va);
 	va_end(va);
 }
 
-void Log::msgps(char const* const format, ConsoleAttribute const attr, ConsoleColor const fg_color, ConsoleColor const bg_color, ...) {
+void Log::msgps(
+	char const* const format,
+	ConsoleAttribute const attr,
+	ConsoleColor const fg_color,
+	ConsoleColor const bg_color,
+	...
+) {
 	va_list va;
 	va_start(va, bg_color);
 	msgp_va(format, attr, fg_color, bg_color, false, false, va);
 	va_end(va);
 }
 
-void Log::msgpsk(char const* const format, ConsoleAttribute const attr, ConsoleColor const fg_color, ConsoleColor const bg_color, ...) {
+void Log::msgpsk(
+	char const* const format,
+	ConsoleAttribute const attr,
+	ConsoleColor const fg_color,
+	ConsoleColor const bg_color,
+	...
+) {
 	va_list va;
 	va_start(va, bg_color);
 	msgp_va(format, attr, fg_color, bg_color, false, true, va);
