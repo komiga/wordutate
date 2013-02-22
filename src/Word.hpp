@@ -124,7 +124,7 @@ private:
 
 public:
 	PhraseParser()
-		: duct::Parser(duct::Encoding::UTF8, duct::Endian::SYSTEM)
+		: duct::Parser({duct::Encoding::UTF8, duct::Endian::SYSTEM})
 		, m_group(nullptr)
 	{}
 
