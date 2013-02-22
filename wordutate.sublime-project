@@ -3,11 +3,14 @@
 	[
 		{
 			"name": "Root",
-			"path": "./"
+			"path": "./",
+			"folder_exclude_patterns": ["bin", "dep", "out", "src"],
+			"file_exclude_patterns": ["Makefile", "*.make"]
 		},
 		{
 			"name": "- Dependencies",
-			"path": "./dep/"
+			"path": "./dep/",
+			"folder_exclude_patterns": ["duct"]
 		},
 		{
 			"name": "- Source",
