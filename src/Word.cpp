@@ -23,7 +23,7 @@ static duct::CharacterSet const s_set_whitespace{"\t \r\n"};
 
 void Word::refresh_counts() {
 	m_counts.clear();
-	duct::char32 cp;
+	duct::char32 cp=duct::CHAR_REPLACEMENT;
 	String::const_iterator pos=m_word.cbegin(), next;
 	for (; m_word.cend()!=pos; pos=next) {
 		next=duct::UTF8Utils::decode(
