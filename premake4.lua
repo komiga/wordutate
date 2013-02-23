@@ -50,8 +50,7 @@ configuration {"clang"}
 
 configuration {}
 	includedirs {
-		"dep/duct/",
-		"include/"
+		"dep/duct/"
 	}
 	files {
 		"src/**"
