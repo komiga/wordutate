@@ -9,14 +9,10 @@
 
 #include <duct/char.hpp>
 #include <duct/traits.hpp>
-#include <duct/Parser.hpp>
-#include <algorithm>
-#include <memory>
+#include <duct/EncodingUtils.hpp>
 
 // Forward declarations
 class Word;
-class Wordutator;
-class PhraseParser;
 
 /**
 */
@@ -77,73 +73,6 @@ public:
 		ConsoleColor const ovr_bgc=COLOR_NULL
 	) const;
 /// @}
-};
-
-/**
-*/
-class Wordutator final
-	: duct::traits::restrict_copy {
-public:
-	typedef aux::vector<std::shared_ptr<Word> > word_vector_type;
-
-private:
-	String m_phrase{};
-	word_vector_type m_group{};
-
-public:
-/** @name Constructor and destructor */ /// @{
-	Wordutator()=default;
-	~Wordutator()=default;
-/// @}
-
-/** @name Properties */ /// @{
-	size_t set_phrase(String const& phrase);
-	String& get_phrase() { return m_phrase; }
-	word_vector_type& get_group() { return m_group; }
-	size_t get_count() const { return m_group.size(); }
-/// @}
-
-/** @name Comparison & operations */ /// @{
-	bool compare(Wordutator& other) const;
-
-	void calc_colors();
-	void clear() {
-		m_group.clear();
-	}
-	void print(
-		char const prefix[],
-		bool const newline=true,
-		ConsoleColor const fgc=COLOR_BLUE
-	) const;
-/// @}
-};
-
-/**
-*/
-class PhraseParser final
-	: public duct::Parser
-	, duct::traits::restrict_copy {
-private:
-	Wordutator::word_vector_type* m_group{nullptr};
-
-public:
-	PhraseParser()
-		: duct::Parser({duct::Encoding::UTF8, duct::Endian::SYSTEM})
-	{}
-	~PhraseParser()=default;
-
-	bool process(Wordutator::word_vector_type& group, String const& str);
-
-// TODO: Make all of these virtuals private in duct++
-private:
-	void skip_whitespace();
-	bool parse() override;
-	void reset() override;
-	void discern_token() override;
-	void read_token() override;
-	void handle_token() override;
-	void read_word_token();
-	void read_word_span_token();
 };
 
 #endif // WORDUTATE_WORD_HPP_

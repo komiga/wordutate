@@ -4,7 +4,7 @@
 
 #include "./config.hpp"
 #include "./String.hpp"
-#include "./Word.hpp"
+#include "./Wordutator.hpp"
 
 #include <duct/traits.hpp>
 
