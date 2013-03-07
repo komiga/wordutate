@@ -1,6 +1,4 @@
 
--- wordutate premake file
-
 newoption {
 	trigger="clang",
 	description="Use Clang in-place of GCC",
@@ -39,14 +37,34 @@ configuration {"release"}
 	defines {"NDEBUG"}
 	flags {"ExtraWarnings", "Optimize"}
 
-configuration {"linux" or "clang"}
-	buildoptions {"-std=c++0x", "-pedantic", "-Wextra"}
+configuration {"linux"}
+	buildoptions {
+		"-pedantic-errors",
+		"-Werror",
+		"-Wextra",
 
-configuration {"clang"}
-	buildoptions {"-stdlib=libstdc++"}
-	links {
-		"stdc++"
+		"-Wuninitialized",
+		"-Winit-self",
+
+		"-Wmissing-field-initializers",
+		"-Wredundant-decls",
+
+		"-Wfloat-equal",
+		"-Wold-style-cast",
+
+		"-Wnon-virtual-dtor",
+		"-Woverloaded-virtual",
+
+		"-Wunused"
 	}
+
+configuration {"linux", "not clang"}
+	buildoptions {"-std=c++0x"}
+
+configuration {"linux", "clang"}
+	buildoptions {"-std=c++11"}
+	buildoptions {"-stdlib=libstdc++"}
+	links {"stdc++"}
 
 configuration {}
 	includedirs {
