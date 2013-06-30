@@ -18,7 +18,8 @@ struct ColorPair {
 	ConsoleColor bg;
 };
 
-ColorPair const s_color_pairs[]{
+ColorPair const
+s_color_pairs[]{
 	// BG black
 	{COLOR_RED, COLOR_BLACK},
 	{COLOR_GREEN, COLOR_BLACK},
@@ -57,7 +58,10 @@ ColorPair const s_color_pairs[]{
 
 } // anonymous namespace
 
-std::size_t Wordutator::set_phrase(String const& phrase) {
+std::size_t
+Wordutator::set_phrase(
+	String const& phrase
+) {
 	m_phrase.assign(phrase);
 	clear();
 	s_parser.process(m_group, m_phrase);
@@ -65,30 +69,35 @@ std::size_t Wordutator::set_phrase(String const& phrase) {
 	return get_count();
 }
 
-void Wordutator::calc_colors() {
-	auto iter=m_group.begin();
-	auto const* pair=s_color_pairs;
-	for (; m_group.end()!=iter; ++iter, ++pair) {
-		if (COLOR_NULL==pair->fg) {
-			pair=s_color_pairs;
+void
+Wordutator::calc_colors() {
+	auto iter = m_group.begin();
+	auto const* pair = s_color_pairs;
+	for (; m_group.end() != iter; ++iter, ++pair) {
+		if (COLOR_NULL == pair->fg) {
+			pair = s_color_pairs;
 		}
 		(*iter)->set_color(pair->fg, pair->bg);
 	}
 }
 
-bool Wordutator::compare(Wordutator& other) const {
+bool
+Wordutator::compare(
+	Wordutator& other
+) const {
 	// Match words
 	aux::vector<Word const*> unmatched;
-	aux::list<std::shared_ptr<Word> > candidates
-		{other.m_group.begin(), other.m_group.end()};
+	aux::list<std::shared_ptr<Word> >
+		candidates{other.m_group.begin(), other.m_group.end()};
+
 	for (auto const& word : m_group) {
-		auto candidate_iter=candidates.begin();
-		for (; candidates.end()!=candidate_iter; ++candidate_iter) {
+		auto candidate_iter = candidates.begin();
+		for (; candidates.end() != candidate_iter; ++candidate_iter) {
 			if (word->matches(**candidate_iter)) {
 				break;
 			}
 		}
-		if (candidates.end()!=candidate_iter) { // Match found
+		if (candidates.end() != candidate_iter) { // Match found
 			// Colorize matching word
 			(*candidate_iter)->set_color(*word);
 			candidates.erase(candidate_iter);
@@ -101,7 +110,7 @@ bool Wordutator::compare(Wordutator& other) const {
 		word->set_color(COLOR_WHITE, COLOR_RED);
 	}
 
-	bool matches=(candidates.empty() && get_count()==other.get_count());
+	bool matches=(candidates.empty() && get_count() == other.get_count());
 	other.print("compare", false, matches ? COLOR_GREEN : COLOR_RED);
 
 	// Print un-matched original words
@@ -120,7 +129,8 @@ bool Wordutator::compare(Wordutator& other) const {
 	return matches;
 }
 
-void Wordutator::print(
+void
+Wordutator::print(
 	char const prefix[],
 	bool const newline,
 	ConsoleColor const fgc

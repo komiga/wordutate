@@ -18,9 +18,10 @@ class Wordutator;
 /**
 */
 class Wordutator final
-	: duct::traits::restrict_copy {
+	: duct::traits::restrict_copy
+{
 public:
-	typedef aux::vector<std::shared_ptr<Word> > word_vector_type;
+	using word_vector_type = aux::vector<std::shared_ptr<Word> >;
 
 private:
 	String m_phrase{};
@@ -28,28 +29,51 @@ private:
 
 public:
 /** @name Constructor and destructor */ /// @{
-	Wordutator()=default;
-	~Wordutator()=default;
+	Wordutator() = default;
+	~Wordutator() = default;
 /// @}
 
 /** @name Properties */ /// @{
-	std::size_t set_phrase(String const& phrase);
-	String& get_phrase() { return m_phrase; }
-	word_vector_type& get_group() { return m_group; }
-	std::size_t get_count() const { return m_group.size(); }
+	std::size_t
+	set_phrase(
+		String const& phrase
+	);
+
+	String&
+	get_phrase() {
+		return m_phrase;
+	}
+
+	word_vector_type&
+	get_group() {
+		return m_group;
+	}
+
+	std::size_t
+	get_count() const {
+		return m_group.size();
+	}
 /// @}
 
 /** @name Comparison & operations */ /// @{
-	bool compare(Wordutator& other) const;
+	bool
+	compare(
+		Wordutator& other
+	) const;
 
-	void calc_colors();
-	void clear() {
+	void
+	calc_colors();
+
+	void
+	clear() {
 		m_group.clear();
 	}
-	void print(
+
+	void
+	print(
 		char const prefix[],
-		bool const newline=true,
-		ConsoleColor const fgc=COLOR_BLUE
+		bool const newline = true,
+		ConsoleColor const fgc = COLOR_BLUE
 	) const;
 /// @}
 };

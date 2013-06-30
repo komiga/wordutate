@@ -8,15 +8,18 @@
 
 // class Log implementation
 
-void Log::init() {
+void
+Log::init() {
 	DUCT_DEBUG_CALLED();
 }
 
-void Log::shutdown() {
+void
+Log::shutdown() {
 	DUCT_DEBUG_CALLED();
 }
 
-void Log::msgp_va(
+void
+Log::msgp_va(
 	char const* const format,
 	ConsoleAttribute const attr,
 	ConsoleColor const fg_color,
@@ -35,7 +38,8 @@ void Log::msgp_va(
 	}
 }
 
-void Log::msgp(
+void
+Log::msgp(
 	char const* const format,
 	ConsoleAttribute const attr,
 	ConsoleColor const fg_color,
@@ -48,7 +52,8 @@ void Log::msgp(
 	va_end(va);
 }
 
-void Log::msgps(
+void
+Log::msgps(
 	char const* const format,
 	ConsoleAttribute const attr,
 	ConsoleColor const fg_color,
@@ -61,7 +66,8 @@ void Log::msgps(
 	va_end(va);
 }
 
-void Log::msgpsk(
+void
+Log::msgpsk(
 	char const* const format,
 	ConsoleAttribute const attr,
 	ConsoleColor const fg_color,
@@ -74,7 +80,11 @@ void Log::msgpsk(
 	va_end(va);
 }
 
-void Log::msg(char const* const format, ...) {
+void
+Log::msg(
+	char const* const format,
+	...
+) {
 	va_list va;
 	va_start(va, format);
 	std::vprintf(format, va);
@@ -82,7 +92,11 @@ void Log::msg(char const* const format, ...) {
 	std::putchar('\n');
 }
 
-void Log::error(char const* const format, ...) {
+void
+Log::error(
+	char const* const format,
+	...
+) {
 	Console::instance()->push(ATTR_BOLD, COLOR_WHITE, COLOR_RED);
 	std::printf("error: ");
 	va_list va;
@@ -93,7 +107,11 @@ void Log::error(char const* const format, ...) {
 	std::putchar('\n');
 }
 
-void Log::warning(char const* const format, ...) {
+void
+Log::warning(
+	char const* const format,
+	...
+) {
 	Console::instance()->push(ATTR_BOLD, COLOR_RED);
 	std::printf("warning: ");
 	va_list va;

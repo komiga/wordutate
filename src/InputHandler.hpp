@@ -16,9 +16,9 @@ class InputHandler;
 /**
 */
 enum CommandFlags : unsigned {
-	CMDFLAG_NULL		=1<<0,
-	CMDFLAG_START		=1<<1,
-	CMDFLAG_ABSOLUTE	=1<<2
+	CMDFLAG_NULL		= 1 << 0,
+	CMDFLAG_START		= 1 << 1,
+	CMDFLAG_ABSOLUTE	= 1 << 2
 };
 
 /**
@@ -27,7 +27,10 @@ struct Command final {
 	String const kernel;
 	unsigned const flags;
 	// (handler, params)
-	bool (*func)(InputHandler&, String&);
+	bool
+	(*func)(
+		InputHandler&, String&
+	);
 };
 
 /**
@@ -40,15 +43,26 @@ private:
 	Wordutator m_wt_comparer{};
 
 public:
-	InputHandler()=default;
+	InputHandler() = default;
 
-	Wordutator& get_current() { return m_wt_current; }
-	Wordutator& get_comparer() { return m_wt_comparer; }
+	Wordutator&
+	get_current() {
+		return m_wt_current;
+	}
 
-	bool handle_input();
+	Wordutator&
+	get_comparer() {
+		return m_wt_comparer;
+	}
+
+	bool
+	handle_input();
 
 private:
-	bool match_command(Command const& cmd);
+	bool
+	match_command(
+		Command const& cmd
+	);
 };
 
 #endif // WORDUTATE_INPUT_HPP_

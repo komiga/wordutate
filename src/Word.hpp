@@ -17,9 +17,10 @@ class Word;
 /**
 */
 class Word final
-	: duct::traits::restrict_copy {
+	: duct::traits::restrict_copy
+{
 private:
-	typedef aux::unordered_map<duct::char32, unsigned> count_map_type;
+	using count_map_type = aux::unordered_map<duct::char32, unsigned>;
 	String m_word;
 	count_map_type m_counts{};
 	ConsoleColor m_fgc{COLOR_CURRENT};
@@ -27,50 +28,95 @@ private:
 
 public:
 /** @name Constructor and destructor */ /// @{
-	explicit Word(String word)
-		: m_word{std::move(word)}
+	explicit
+	Word(
+		String word
+	)
+		: m_word(std::move(word))
 	{
 		refresh_counts();
 	}
-	~Word()=default;
+
+	~Word() = default;
 /// @}
 
 /** @name Properties */ /// @{
-	void set_word(String const& word) {
+	void
+	set_word(
+		String const& word
+	) {
 		m_word.assign(word);
 		refresh_counts();
 	}
-	String const& get_word() const { return m_word; }
-	std::size_t get_length() const {
-		return duct::UTF8Utils::count(m_word.cbegin(), m_word.cend(), true);
+
+	String const&
+	get_word() const {
+		return m_word;
 	}
 
-	void set_color(ConsoleColor const fgc, ConsoleColor const bgc) {
-		m_fgc=fgc;
-		m_bgc=bgc;
+	std::size_t
+	get_length() const {
+		return duct::UTF8Utils::count(
+			m_word.cbegin(), m_word.cend(),
+			true
+		);
 	}
-	void set_color(Word const& other) {
-		m_fgc=other.m_fgc;
-		m_bgc=other.m_bgc;
-	}
-	ConsoleColor get_fg_color() const { return m_fgc; }
-	ConsoleColor get_bg_color() const { return m_bgc; }
 
-	std::size_t distinct_char_count() const { return m_counts.size(); }
+	void
+	set_color(
+		ConsoleColor const fgc,
+		ConsoleColor const bgc
+	) {
+		m_fgc = fgc;
+		m_bgc = bgc;
+	}
+
+	void
+	set_color(
+		Word const& other
+	) {
+		m_fgc = other.m_fgc;
+		m_bgc = other.m_bgc;
+	}
+
+	ConsoleColor
+	get_fg_color() const {
+		return m_fgc;
+	}
+
+	ConsoleColor
+	get_bg_color() const {
+		return m_bgc;
+	}
+
+	std::size_t
+	distinct_char_count() const {
+		return m_counts.size();
+	}
 /// @}
 
 /** @name Comparison and operations */ /// @{
-	bool has(duct::char32 const cp) const {
-		return m_counts.cend()!=m_counts.find(cp);
+	bool
+	has(
+		duct::char32 const cp
+	) const {
+		return m_counts.cend() != m_counts.find(cp);
 	}
-	bool matches(Word const& other) const;
 
-	void refresh_counts();
-	void print(
+	bool
+	matches(
+		Word const& other
+	) const;
+
+	void
+	refresh_counts();
+
+	void
+	print(
 		bool style,
-		ConsoleAttribute const attr=ATTR_BOLD,
-		ConsoleColor const ovr_fgc=COLOR_NULL,
-		ConsoleColor const ovr_bgc=COLOR_NULL
+		ConsoleAttribute const attr = ATTR_BOLD,
+		ConsoleColor const ovr_fgc = COLOR_NULL,
+		ConsoleColor const ovr_bgc = COLOR_NULL
 	) const;
 /// @}
 };
