@@ -11,8 +11,10 @@ Console* Console::s_instance = nullptr;
 void
 Console::init() {
 	DUCT_DEBUG_CALLED();
-	DUCT_ASSERT(nullptr == s_instance,
-		"Console already initialized");
+	DUCT_ASSERT(
+		nullptr == s_instance,
+		"Console already initialized"
+	);
 	s_instance = new Console();
 }
 
@@ -45,8 +47,10 @@ Console::pop() {
 	// NOTE: Style stack has persistent
 	// {ATTR_NONE, COLOR_DEFAULT, COLOR_DEFAULT}
 	// at bottom
-	DUCT_ASSERT(1<m_stack.size(),
-		"Push/pop mismatch. Cannot pop at bottom of stack!");
+	DUCT_ASSERT(
+		1 < m_stack.size(),
+		"Push/pop mismatch. Cannot pop at bottom of stack!"
+	);
 	m_stack.pop();
 	set_props();
 }

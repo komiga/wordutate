@@ -50,12 +50,12 @@ public:
 	}
 
 	String const&
-	get_word() const {
+	get_word() const noexcept {
 		return m_word;
 	}
 
 	std::size_t
-	get_length() const {
+	get_length() const noexcept {
 		return duct::UTF8Utils::count(
 			m_word.cbegin(), m_word.cend(),
 			true
@@ -66,7 +66,7 @@ public:
 	set_color(
 		ConsoleColor const fgc,
 		ConsoleColor const bgc
-	) {
+	) noexcept {
 		m_fgc = fgc;
 		m_bgc = bgc;
 	}
@@ -74,23 +74,23 @@ public:
 	void
 	set_color(
 		Word const& other
-	) {
+	) noexcept {
 		m_fgc = other.m_fgc;
 		m_bgc = other.m_bgc;
 	}
 
 	ConsoleColor
-	get_fg_color() const {
+	get_fg_color() const noexcept {
 		return m_fgc;
 	}
 
 	ConsoleColor
-	get_bg_color() const {
+	get_bg_color() const noexcept {
 		return m_bgc;
 	}
 
 	std::size_t
-	distinct_char_count() const {
+	distinct_char_count() const noexcept {
 		return m_counts.size();
 	}
 /// @}

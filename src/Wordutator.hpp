@@ -40,17 +40,17 @@ public:
 	);
 
 	String&
-	get_phrase() {
+	get_phrase() noexcept {
 		return m_phrase;
 	}
 
 	word_vector_type&
-	get_group() {
+	get_group() noexcept {
 		return m_group;
 	}
 
 	std::size_t
-	get_count() const {
+	get_count() const noexcept {
 		return m_group.size();
 	}
 /// @}
@@ -65,7 +65,7 @@ public:
 	calc_colors();
 
 	void
-	clear() {
+	clear() noexcept {
 		m_group.clear();
 	}
 

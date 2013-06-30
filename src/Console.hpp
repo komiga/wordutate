@@ -79,7 +79,7 @@ private:
 
 public:
 	static Console*
-	instance() {
+	instance() noexcept {
 		return s_instance;
 	}
 

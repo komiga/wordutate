@@ -35,7 +35,9 @@ struct Command final {
 
 /**
 */
-class InputHandler final : duct::traits::restrict_copy {
+class InputHandler final
+	: duct::traits::restrict_copy
+{
 private:
 	String m_input{};
 	String m_params{};
@@ -46,12 +48,12 @@ public:
 	InputHandler() = default;
 
 	Wordutator&
-	get_current() {
+	get_current() noexcept {
 		return m_wt_current;
 	}
 
 	Wordutator&
-	get_comparer() {
+	get_comparer() noexcept {
 		return m_wt_comparer;
 	}
 
