@@ -4,7 +4,7 @@
 
 #include <duct/debug.hpp>
 #include <duct/CharacterSet.hpp>
-#include <duct/IO.hpp>
+#include <duct/IO/memstream.hpp>
 
 // class PhraseParser implementation
 
