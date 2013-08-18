@@ -1,46 +1,49 @@
 
-newoption {
-	trigger="clang",
-	description="Use Clang in-place of GCC",
-}
+dofile("precore_import.lua")
 
-if _OPTIONS["clang"] then
-	premake.gcc.cc="clang"
-	premake.gcc.cxx="clang++"
-end
+precore.init(
+	nil,
+	{
+		"opt-clang",
+		"c++11-core"
+	}
+)
 
 -- Solution
-solution("wordutate")
-	configurations {"debug", "release"}
-	platforms {"x64", "x32"}
+
+precore.make_solution(
+	"murk",
+	{"debug", "release"},
+	{"x64", "x32"},
+	nil,
+	{
+		"precore-generic"
+	}
+)
 
 -- Project
-local proj=project("wordutate")
-	proj.language="C++"
-	proj.kind="ConsoleApp"
 
-targetname("wordutate")
+precore.make_project(
+	"wordutate",
+	"C++", "ConsoleApp",
+	"bin/", "out/",
+	nil, nil
+)
 
 configuration {"x32"}
-	objdir("out/")
-	targetdir("bin/x32/")
+	targetsuffix(".x86")
 
 configuration {"x64"}
-	objdir("out/")
-	targetdir("bin/x64/")
+	targetsuffix(".x86_64")
 
-configuration {"debug"}
-	defines {"DEBUG", "_DEBUG"}
-	flags {"ExtraWarnings", "Symbols"}
-
-configuration {"release"}
-	defines {"NDEBUG"}
-	flags {"ExtraWarnings", "Optimize"}
+configuration {}
+	flags {
+		"FatalWarnings"
+	}
 
 configuration {"linux"}
 	buildoptions {
 		"-pedantic-errors",
-		"-Werror",
 		"-Wextra",
 
 		"-Wuninitialized",
@@ -58,14 +61,6 @@ configuration {"linux"}
 		"-Wunused"
 	}
 
-configuration {"linux", "not clang"}
-	buildoptions {"-std=c++0x"}
-
-configuration {"linux", "clang"}
-	buildoptions {"-std=c++11"}
-	buildoptions {"-stdlib=libstdc++"}
-	links {"stdc++"}
-
 configuration {}
 	includedirs {
 		"dep/duct/"
@@ -73,3 +68,12 @@ configuration {}
 	files {
 		"src/**"
 	}
+
+if "clean" == _ACTION then
+	for _, pc_sol in pairs(precore.state.solutions) do
+		for _, pc_proj in pairs(pc_sol.projects) do
+			os.rmdir(path.join(pc_proj.obj.basedir, "out"))
+			os.rmdir(path.join(pc_proj.obj.basedir, "bin"))
+		end
+	end
+end
