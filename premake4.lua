@@ -66,7 +66,7 @@ configuration {}
 		"dep/duct/"
 	}
 	files {
-		"src/**"
+		"src/**.cpp"
 	}
 
 if "clean" == _ACTION then
