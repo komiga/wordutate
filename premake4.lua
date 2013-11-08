@@ -58,7 +58,8 @@ configuration {"linux"}
 		"-Wnon-virtual-dtor",
 		"-Woverloaded-virtual",
 
-		"-Wunused"
+		"-Wunused",
+		"-Wundef",
 	}
 
 configuration {}
