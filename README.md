@@ -1,11 +1,13 @@
 
 ## What is this?
 
-**wordutate** is a command-line phrase permutation matcher for GNU/Linux (and probably OS X).
+**wordutate** is a command-line phrase permutation matcher for GNU/Linux
+(and probably OS X).
 
 … Uh, let me explain by example.
 
-Given the phrase `tea is delicious`, wordutate will match any reordering and permutation of the words. Thus, all of the following match this phrase:
+Given the phrase `tea is delicious`, wordutate will match any reordering and
+permutation of the words. Thus, all of the following match this phrase:
 
 ```
 is tea delicious
@@ -14,31 +16,49 @@ eat is delicious
 tea is ledicious
 ```
 
-It also allows grouping with braces, where whitespace is ignored in matching. The following input will match `sledgehammer`:
+It also allows grouping with braces, where whitespace is ignored in matching.
+The following input will match `sledgehammer`:
 
 ```
 {sledge hammer}
 {hammer sledge}
 ```
 
-(If you wanted to match a phrase in any broken-up form, you could set *and* match the entire phrase with braces.)
+(If you wanted to match a phrase in any broken-up form, you could set *and*
+match the entire phrase with braces.)
 
-If an input word matches one in the current phrase, it will share the color of the matched word. Non-matching input words will have a red background and all unmatched words from the current phrase will be placed to the right of the input words (separated by a striked `||`).
+If an input word matches one in the current phrase, it will share the color of
+the matched word. Non-matching input words will have a red background and all
+unmatched words from the current phrase will be placed to the right of the
+input words (separated by a striked `||`).
 
 ## Commands
 
-Input commands (`$` and `@`) take arguments immediately after the command (which need not be spaced).
+Input commands (`$` and `@`) take arguments immediately after the command
+(which need not be spaced).
 
 * `$<args>`: set the current phrase.
-* `@<args>`: compare current phrase with inputted phrase (can also input the bare phrase — with no `@`).
+* `@<args>`: compare current phrase with inputted phrase (can also input the
+  bare phrase — with no `@`).
 * `#`: print the current phrase.
 * `q`: quit.
 
-## Compiling
+## Dependencies
 
-You'll need a respectable C++11 compiler (like Clang 3.1+ or GCC 4.7+, which are actually the only two that currently work due to global ctors & dtors), [premake](http://industriousone.com/premake) 4.4+, and [duct++](/komiga/duct-cpp) (see the README in [dep/](/komiga/wordutate/tree/master/dep)).
+wordutate uses:
 
-Run `build.sh` (or `build.sh _ gmake --clang` for Clang, and set `CC` and `CXX` to `clang` — yay, premake hacks!) and then `make`.
+1. [duct++](https://github.com/komiga/duct-cpp) (HEAD)
+
+See `dep/README.md` for dependency setup.
+
+## Building
+
+You'll need a respectable C++11 compiler like Clang 3.1+ or GCC 4.7.3+, which
+are actually the only two that currently work due to global ctors & dtors.
+Both libc++ (SVN head) and libstdc++ (as of 4.7.3) are supported.
+
+Once dependencies are setup (see `dep/README.md`), wordutate can be compiled
+using plash's standard project protocol: http://komiga.com/pp-cpp
 
 ## License
 
