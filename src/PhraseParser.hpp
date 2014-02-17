@@ -24,7 +24,7 @@ private:
 
 public:
 	PhraseParser()
-		: duct::Parser({duct::Encoding::UTF8, duct::Endian::SYSTEM})
+		: duct::Parser({duct::Encoding::UTF8, duct::Endian::system})
 	{}
 	~PhraseParser() = default;
 
