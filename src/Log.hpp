@@ -1,6 +1,5 @@
 
-#ifndef WORDUTATE_LOG_HPP_
-#define WORDUTATE_LOG_HPP_
+#pragma once
 
 #include "./Console.hpp"
 
@@ -77,5 +76,3 @@ public:
 	);
 
 };
-
-#endif // WORDUTATE_LOG_HPP_

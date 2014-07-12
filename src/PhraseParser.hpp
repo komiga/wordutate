@@ -1,6 +1,5 @@
 
-#ifndef WORDUTATE_PHRASEPARSER_HPP_
-#define WORDUTATE_PHRASEPARSER_HPP_
+#pragma once
 
 #include "./config.hpp"
 #include "./String.hpp"
@@ -59,5 +58,3 @@ private:
 	void
 	read_word_span_token();
 };
-
-#endif // WORDUTATE_PHRASEPARSER_HPP_

@@ -1,6 +1,5 @@
 
-#ifndef WORDUTATE_AUX_HPP_
-#define WORDUTATE_AUX_HPP_
+#pragma once
 
 #include "./config.hpp"
 
@@ -62,5 +61,3 @@ using unordered_map
 >;
 
 }
-
-#endif // WORDUTATE_AUX_HPP_

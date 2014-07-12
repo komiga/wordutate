@@ -1,6 +1,5 @@
 
-#ifndef WORDUTATE_CONSOLE_HPP_
-#define WORDUTATE_CONSOLE_HPP_
+#pragma once
 
 #include "./config.hpp"
 #include "./String.hpp"
@@ -104,5 +103,3 @@ private:
 	void
 	reset_props() const;
 };
-
-#endif // WORDUTATE_CONSOLE_HPP_

@@ -1,6 +1,5 @@
 
-#ifndef WORDUTATE_WORDUTATOR_HPP_
-#define WORDUTATE_WORDUTATOR_HPP_
+#pragma once
 
 #include "./config.hpp"
 #include "./aux.hpp"
@@ -77,5 +76,3 @@ public:
 	) const;
 /// @}
 };
-
-#endif // WORDUTATE_WORDUTATOR_HPP_

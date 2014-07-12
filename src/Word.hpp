@@ -1,6 +1,5 @@
 
-#ifndef WORDUTATE_WORD_HPP_
-#define WORDUTATE_WORD_HPP_
+#pragma once
 
 #include "./config.hpp"
 #include "./aux.hpp"
@@ -120,5 +119,3 @@ public:
 	) const;
 /// @}
 };
-
-#endif // WORDUTATE_WORD_HPP_

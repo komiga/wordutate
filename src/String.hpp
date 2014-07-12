@@ -1,6 +1,5 @@
 
-#ifndef WORDUTATE_STRING_HPP_
-#define WORDUTATE_STRING_HPP_
+#pragma once
 
 #include "./config.hpp"
 
@@ -13,5 +12,3 @@ using String
 	std::char_traits<char>,
 	WORDUTATE_ALLOCATOR<char>
 >;
-
-#endif // WORDUTATE_STRING_HPP_

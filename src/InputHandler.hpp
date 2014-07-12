@@ -1,6 +1,5 @@
 
-#ifndef WORDUTATE_INPUT_HPP_
-#define WORDUTATE_INPUT_HPP_
+#pragma once
 
 #include "./config.hpp"
 #include "./String.hpp"
@@ -66,5 +65,3 @@ private:
 		Command const& cmd
 	);
 };
-
-#endif // WORDUTATE_INPUT_HPP_
