@@ -70,11 +70,4 @@ configuration {}
 		"src/**.cpp"
 	}
 
-if "clean" == _ACTION then
-	for _, pc_sol in pairs(precore.state.solutions) do
-		for _, pc_proj in pairs(pc_sol.projects) do
-			os.rmdir(path.join(pc_proj.obj.basedir, "out"))
-			os.rmdir(path.join(pc_proj.obj.basedir, "bin"))
-		end
-	end
-end
+precore.action_clean("out", "bin")
