@@ -12,7 +12,7 @@ precore.init(
 -- Solution
 
 precore.make_solution(
-	"murk",
+	"wordutate",
 	{"debug", "release"},
 	{"x64", "x32"},
 	nil,
