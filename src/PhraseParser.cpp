@@ -59,7 +59,7 @@ PhraseParser::parse() {
 	discern_token();
 	read_token();
 	handle_token();
-	if (TOK_EOF == m_token.get_type() || duct::CHAR_EOF == m_curchar) {
+	if (TOK_EOF == m_token.type() || duct::CHAR_EOF == m_curchar) {
 		return false;
 	}
 	return true;
@@ -80,7 +80,7 @@ PhraseParser::discern_token() {
 
 void
 PhraseParser::read_token() {
-	switch (m_token.get_type()) {
+	switch (m_token.type()) {
 	case TOK_WORD:
 		read_word_token();
 		break;
@@ -96,12 +96,12 @@ PhraseParser::read_token() {
 
 void
 PhraseParser::handle_token() {
-	switch (m_token.get_type()) {
+	switch (m_token.type()) {
 	case TOK_WORD_SPAN:
 	case TOK_WORD:
-		if (!m_token.get_buffer().compare(s_set_whitespace)) {
+		if (!m_token.buffer().compare(s_set_whitespace)) {
 			m_group->emplace_back(
-				new Word(m_token.get_buffer().to_string<String>()));
+				new Word(m_token.buffer().to_string<String>()));
 		}
 		break;
 	default:
@@ -115,7 +115,7 @@ PhraseParser::read_word_token() {
 		if (s_set_whitespace.contains(m_curchar)) {
 			break;
 		} else {
-			m_token.get_buffer().push_back(m_curchar);
+			m_token.buffer().push_back(m_curchar);
 		}
 		next_char();
 	}
@@ -130,7 +130,7 @@ PhraseParser::read_word_span_token() {
 			next_char();
 			break;
 		} else {
-			m_token.get_buffer().push_back(m_curchar);
+			m_token.buffer().push_back(m_curchar);
 		}
 		next_char();
 	}
