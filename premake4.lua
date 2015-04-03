@@ -1,40 +1,39 @@
 
 dofile("precore_import.lua")
+local S, G, R = precore.helpers()
 
 precore.init(
 	nil,
 	{
-		"opt-clang",
-		"c++11-core"
+		"precore.clang-opts",
+		"precore.c++11-core",
+		"precore.env-common",
 	}
 )
 
--- Solution
+precore.import(G"${DEP_PATH}/duct")
 
 precore.make_solution(
 	"wordutate",
 	{"debug", "release"},
-	{"x64", "x32"},
+	{"native"},
 	nil,
 	{
-		"precore-generic"
+		"precore.generic",
 	}
 )
-
--- Project
 
 precore.make_project(
 	"wordutate",
 	"C++", "ConsoleApp",
 	"bin/", "out/",
-	nil, nil
+	nil, {
+		"duct.dep",
+	}
 )
 
-configuration {"x32"}
-	targetsuffix(".x86")
-
-configuration {"x64"}
-	targetsuffix(".x86_64")
+configuration {"linux"}
+	targetsuffix(".elf")
 
 configuration {}
 	flags {
@@ -63,9 +62,6 @@ configuration {"linux"}
 	}
 
 configuration {}
-	includedirs {
-		"dep/duct/"
-	}
 	files {
 		"src/**.cpp"
 	}
