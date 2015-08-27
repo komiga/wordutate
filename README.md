@@ -65,7 +65,7 @@ using plash's standard project protocol: http://komiga.com/pp-cpp
 wordutate carries the MIT license, which is conveniently plastered below.
 
 ```
-Copyright (c) 2012-2014 Timothy Howard
+Copyright (c) 2012-2014 plash <plash@komiga.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
