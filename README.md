@@ -58,14 +58,14 @@ are actually the only two that currently work due to global ctors & dtors.
 Both libc++ (SVN head) and libstdc++ (as of 4.7.3) are supported.
 
 Once dependencies are setup (see `dep/README.md`), wordutate can be compiled
-using plash's standard project protocol: http://komiga.com/pp-cpp
+using my [standard project protocol](http://komiga.com/pp-cpp).
 
 ## License
 
 wordutate carries the MIT license, which is conveniently plastered below.
 
 ```
-Copyright (c) 2012-2014 plash <plash@komiga.com>
+Copyright (c) 2012-2014 Coranna Howard <me@komiga.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
